@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Button,
+  Image,
   Modal,
   StyleSheet,
   TextInput,
@@ -25,6 +26,7 @@ function GoalInput(props) {
       animationType='slide'
     >
       <View style={styles.inputContainer}>
+        <Image source={require('../assets/images/goal.png')} style={styles.image} />
         <TextInput
           style={styles.textInput}
           placeholder='Your course goal!'
@@ -57,16 +59,20 @@ const styles = StyleSheet.create({
     flex: 1, // take up 1 portion so (1/6 as its sibling is 5), flex number will add up every sibling's flex number and then portion it up accordingly
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-    padding: 16
+    padding: 16,
+    backgroundColor: '#311b6b'
+  },
+  image: {
+    width: 64,
+    height: 64,
+    margin: 20
   },
   textInput: {
     borderWidth: 1,
     borderColor: '#cccccc',
     width: '100%',
-    padding: 8
+    padding: 8,
+    backgroundColor: 'white'
   },
   buttonContainer: {
     flexDirection: 'row',
