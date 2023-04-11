@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Button,
+  FlatList, // helps with scrolling, specifically built for scrollable lists. Only renders items that are actually visible. Only loads and lazy renders items off the bottom of the screen as they're scrolled in
   ScrollView, // highly configurable, see docs
   StyleSheet,
   Text,
@@ -11,6 +12,13 @@ import {
 // Flexbox is enabled by default on views, default setting is flexDirection: column
 // you can set things like width as a % by wrapping in quotes so it is a sting
 // Button does not have a style prop, it doesn't support styling!
+// ScrollView always renders all the items within it, so if you have a looooong list you could see performance issues as it renders all even if they're not visible yet
+// ScrollView good for things like articles which have a defined end, for lists it's better to use FlatList
+// FlatList doesn't use a custom .map, instead we pass it the list and then use renderItem so it controls rendering as needed
+// FlatList .item holds the data we put into our state
+// FlatList works best when your data array is a list of objects with a unique 'key' property as it then automatically uses that as the key for the item rendered
+// if you don't have/cant set a key property you can instead add another prop to the FlatList component to make and attach a key -> e.g I have an 'id' but no 'key' ->  keyExtractor={(item, index) => { return item.id }}
+
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState('');
@@ -23,7 +31,10 @@ export default function App() {
   function addGoalHandler() {
     setCourseGoals(currentCourseGoals => [
       ...currentCourseGoals,
-      enteredGoalText
+      {
+        key: Math.random().toString(), // good enough for demo remember this isn't guarenteed unique
+        text: enteredGoalText,
+      }
     ]);
   };
 
@@ -41,17 +52,13 @@ export default function App() {
         />
       </View>
       <View style={styles.goalsContainer}>
-        <ScrollView>
-          {courseGoals.map((goal) => {
-            return (
-              <View style={styles.goalItem} key={goal}>
-                <Text style={styles.goalItemText}>
-                  {goal}
-                </Text>
-              </View>
-            )
-          })}
-        </ScrollView>
+        <FlatList data={courseGoals} renderItem={(itemData) => {
+          return (
+            <View style={styles.goalItem}>
+              <Text style={styles.goalItemText}>{itemData.item.text}</Text>
+            </View>
+          )
+        }} />
       </View>
     </View>
   );
