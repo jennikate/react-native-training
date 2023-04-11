@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
 
@@ -53,15 +54,18 @@ export default function App() {
   };
 
   return (
-    <View style={styles.appContainer}>
-      <Button title="Add New Goal" color='#5e0acc' onPress={startAddGoalHandler} />
-      <GoalInput onAddGoal={addGoalHandler} onCancel={endAddGoalHander} visible={modalIsVisible} />
-      <View style={styles.goalsContainer}>
-        <FlatList data={courseGoals} renderItem={(itemData) => {
-          return <GoalItem id={itemData.item.key} text={itemData.item.text} onDeleteItem={deleteGoalHandler} />
-        }} />
+    <>
+      <StatusBar style='light' />
+      <View style={styles.appContainer}>
+        <Button title="Add New Goal" color='#5e0acc' onPress={startAddGoalHandler} />
+        <GoalInput onAddGoal={addGoalHandler} onCancel={endAddGoalHander} visible={modalIsVisible} />
+        <View style={styles.goalsContainer}>
+          <FlatList data={courseGoals} renderItem={(itemData) => {
+            return <GoalItem id={itemData.item.key} text={itemData.item.text} onDeleteItem={deleteGoalHandler} />
+          }} />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
@@ -69,7 +73,8 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1, // needs to take up entire height of app so that the inner containers will take the portion. This has no siblings so 1 means 100%
     paddingTop: 50,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    // backgroundColor: '#1e085a' // rather than adding it on every container, add it in app.json as your base background color
   },
   goalsContainer: { // we put in a View which controls how much of the screen is taken up, then can add a ScrollView within the View and that is what scrolls
     flex: 5 // take up 5 portions (so 5/6)

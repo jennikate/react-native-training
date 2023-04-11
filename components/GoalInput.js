@@ -34,16 +34,18 @@ function GoalInput(props) {
           value={enteredGoalText} // whenever enteredGoalText changes (e.g when we reset it) it updates
         />
         <View style={styles.buttonContainer}>
-          <View style={styles.button}>
+        <View style={styles.button}>
             <Button
-              title="Add Goal"
-              onPress={addGoalHandler} // call a local function not the function being passed down
+              color="#f31282"
+              title="Cancel"
+              onPress={props.onCancel}
             />
           </View>
           <View style={styles.button}>
             <Button
-              title="Cancel"
-              onPress={props.onCancel}
+              color="#b180f0"
+              title="Add Goal"
+              onPress={addGoalHandler} // call a local function not the function being passed down
             />
           </View>
         </View>
@@ -69,10 +71,12 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
-    borderColor: '#cccccc',
+    borderColor: '#e4d0ff',
+    borderRadius: 6,
     width: '100%',
-    padding: 8,
-    backgroundColor: 'white'
+    padding: 16,
+    backgroundColor: '#e4d0ff',
+    color: '#120438'
   },
   buttonContainer: {
     flexDirection: 'row',
