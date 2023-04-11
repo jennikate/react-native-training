@@ -1,36 +1,36 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
-/* 
- * Style props are supported on View and Text : they can be inline or stylesheet objects (sso's are the better option for same reason as we do with CSS stylesheet)
- * margin takes a number that's converted to the device pixel sizing
- * border does not have a shorthand like in css, you need to specify each item
- * borderColour takes a string, which can be a hex value or a word like 'red'
- */
+// Flexbox is enabled by default on views, default setting is flexDirection: column
+// you can set things like width as a % by wrapping in quotes so it is a sting
 
 export default function App() {
   console.log('logs');
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.dummyText}>Another text</Text>
+    <View style={styles.appContainer}>
+      <View style={styles.inputContainer}>
+        <TextInput  style={styles.textInput} placeholder='Your course goal!' />
+        <Button title="Add Goal" />
       </View>
-      <Text style={{margin: 16, borderWidth: 2, borderColor: 'red', padding: 16}}>Hello world</Text>
-      <Button title="Tap me" />
+      <View>
+        <Text>List of goals...</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  appContainer: {
+    padding: 50
   },
-  dummyText: {
-    margin: 16,
-    borderWidth: 2,
-    borderColor: 'blue',
-    padding: 16
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    width: '80%',
+    marginRight: 8,
+    padding: 8
   }
 });
