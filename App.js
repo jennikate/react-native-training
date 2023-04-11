@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Button,
   FlatList, // helps with scrolling, specifically built for scrollable lists. Only renders items that are actually visible. Only loads and lazy renders items off the bottom of the screen as they're scrolled in
   StyleSheet,
   View
@@ -18,9 +19,13 @@ import GoalItem from './components/GoalItem';
 // FlatList works best when your data array is a list of objects with a unique 'key' property as it then automatically uses that as the key for the item rendered
 // if you don't have/cant set a key property you can instead add another prop to the FlatList component to make and attach a key -> e.g I have an 'id' but no 'key' ->  keyExtractor={(item, index) => { return item.id }}
 
+// you can build your own button with Pressable component with Text and Views inside
+// Button can't take styles but does have a color prop
+
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals(currentCourseGoals => [
@@ -30,6 +35,7 @@ export default function App() {
         text: enteredGoalText,
       }
     ]);
+    endAddGoalHander();
   };
 
   function deleteGoalHandler(key) {
@@ -38,9 +44,18 @@ export default function App() {
     })
   };
 
+  function startAddGoalHandler() {
+    setModalIsVisible(true);
+  };
+
+  function endAddGoalHander() {
+    setModalIsVisible(false);
+  };
+
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button title="Add New Goal" color='#5e0acc' onPress={startAddGoalHandler} />
+      <GoalInput onAddGoal={addGoalHandler} onCancel={endAddGoalHander} visible={modalIsVisible} />
       <View style={styles.goalsContainer}>
         <FlatList data={courseGoals} renderItem={(itemData) => {
           return <GoalItem id={itemData.item.key} text={itemData.item.text} onDeleteItem={deleteGoalHandler} />
