@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import {
-  Button,
   FlatList, // helps with scrolling, specifically built for scrollable lists. Only renders items that are actually visible. Only loads and lazy renders items off the bottom of the screen as they're scrolled in
-  ScrollView, // highly configurable, see docs
   StyleSheet,
-  Text,
-  TextInput,
   View
 } from 'react-native';
+import GoalInput from './components/GoalInput';
+import GoalItem from './components/GoalItem';
+
 
 // Flexbox is enabled by default on views, default setting is flexDirection: column
 // you can set things like width as a % by wrapping in quotes so it is a sting
@@ -21,14 +20,9 @@ import {
 
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState('');
   const [courseGoals, setCourseGoals] = useState([]);
 
-  function goalInputHandler(enteredText) {
-    setEnteredGoalText(enteredText);
-  };
-
-  function addGoalHandler() {
+  function addGoalHandler(enteredGoalText) {
     setCourseGoals(currentCourseGoals => [
       ...currentCourseGoals,
       {
@@ -40,24 +34,10 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder='Your course goal!'
-          onChangeText={goalInputHandler} // execute only on text change, passes value automatically
-        />
-        <Button
-          title="Add Goal"
-          onPress={addGoalHandler}
-        />
-      </View>
+      <GoalInput onAddGoal={addGoalHandler} />
       <View style={styles.goalsContainer}>
         <FlatList data={courseGoals} renderItem={(itemData) => {
-          return (
-            <View style={styles.goalItem}>
-              <Text style={styles.goalItemText}>{itemData.item.text}</Text>
-            </View>
-          )
+          return <GoalItem text={itemData.item.text} />
         }} />
       </View>
     </View>
@@ -70,33 +50,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16
   },
-  inputContainer: {
-    flex: 1, // take up 1 portion so (1/6 as its sibling is 5), flex number will add up every sibling's flex number and then portion it up accordingly
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc'
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '70%',
-    marginRight: 8,
-    padding: 8
-  },
   goalsContainer: { // we put in a View which controls how much of the screen is taken up, then can add a ScrollView within the View and that is what scrolls
     flex: 5 // take up 5 portions (so 5/6)
   },
-  goalItem: {
-    margin: 8,
-    borderRadius: 6, // not supported on Text items for iOS but is on Android. Instead we have to put it in a View which is supported on both
-    backgroundColor: '#5e0acc',
-    padding: 8,
-    // color: 'white' // styles don't cascade so when we put this style on the View, it doesn't apply to the inner Text element
-  },
-  goalItemText: {
-    color: 'white'
-  }
 });
